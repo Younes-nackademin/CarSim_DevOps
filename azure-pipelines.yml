@@ -5,62 +5,96 @@ pool:
   vmImage: 'windows-latest'
 
 stages:
-  - stage: Build
-    displayName: 'Build Stage'
-    jobs:
-      - job: Build
-        displayName: 'Build Solution'
-        steps:
-          - task: UseDotNet@2
-            displayName: 'Install .NET SDK'
+# ===============================
+# BUILD STAGE
+# ===============================
+- stage: Build
+  displayName: 'Build Stage'
+  jobs:
+  - job: Build
+    displayName: 'Build Solution'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Install .NET SDK'
+      inputs:
+        packageType: 'sdk'
+        version: '9.0.x'
+
+    - task: NuGetToolInstaller@1
+      displayName: 'Install NuGet'
+
+    - task: NuGetCommand@2
+      displayName: 'Restore NuGet packages'
+      inputs:
+        restoreSolution: '**/*.sln'
+
+    - task: VSBuild@1
+      displayName: 'Build solution'
+      inputs:
+        solution: '**/*.sln'
+        platform: 'Any CPU'
+        configuration: 'Release'
+
+    # Publicera webappen till artifact-staging
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet publish webapp'
+      inputs:
+        command: 'publish'
+        projects: 'CarSimulator.Server/CarSimulator.Server.csproj'
+        arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/webapp'
+
+    # Skapa zip av publiceringen
+    - task: ArchiveFiles@2
+      displayName: 'Archive build output'
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/webapp'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/CarSimApp.zip'
+        replaceExistingArchive: true
+
+    # Publicera zip som artifact
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+
+# ===============================
+# TEST STAGE
+# ===============================
+- stage: Test
+  displayName: 'Test Stage'
+  dependsOn: Build
+  jobs:
+  - job: RunTests
+    displayName: 'Run Unit Tests'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Run all unit tests'
+      inputs:
+        command: 'test'
+        projects: '**/*Tests.csproj'
+        arguments: '--configuration Release --collect:"XPlat Code Coverage"'
+
+# ===============================
+# DEPLOY STAGE
+# ===============================
+- stage: Deploy
+  displayName: 'Deploy Stage'
+  dependsOn: Test
+  jobs:
+  - deployment: DeployWebApp
+    displayName: 'Deploy to Azure Web App'
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy to Azure App Service'
             inputs:
-              packageType: 'sdk'
-              version: '9.0.x'
-
-          - task: NuGetToolInstaller@1
-            displayName: 'Install NuGet'
-
-          - task: NuGetCommand@2
-            displayName: 'Restore NuGet packages'
-            inputs:
-              restoreSolution: '**/*.sln'
-
-          - task: VSBuild@1
-            displayName: 'Build solution'
-            inputs:
-              solution: '**/*.sln'
-              platform: 'Any CPU'
-              configuration: 'Release'
-
-  - stage: Test
-    displayName: 'Test Stage'
-    dependsOn: Build
-    jobs:
-      - job: RunTests
-        displayName: 'Run Unit Tests'
-        steps:
-          - task: DotNetCoreCLI@2
-            displayName: 'Run all unit tests'
-            inputs:
-              command: 'test'
-              projects: '**/*Tests.csproj'
-              arguments: '--configuration Release --collect:"XPlat Code Coverage"'
-
-  - stage: Deploy
-    displayName: 'Deploy Stage'
-    dependsOn: Test
-    jobs:
-      - deployment: DeployWebApp
-        displayName: 'Deploy to Azure Web App'
-        environment: 'production'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-                - task: AzureWebApp@1
-                  displayName: 'Deploy to Azure App Service'
-                  inputs:
-                    azureSubscription: 'AzureConnection-CarSim'
-                    appType: 'webApp'
-                    appName: 'carsimulatorapp123younes'
-                    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              azureSubscription: 'AzureConnection-CarSim'
+              appType: 'webApp'
+              appName: 'carsimulatorapp123younes'
+              package: '$(Pipeline.Workspace)/drop/CarSimApp.zip'
