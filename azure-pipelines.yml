@@ -45,3 +45,22 @@ stages:
               command: 'test'
               projects: '**/*Tests.csproj'
               arguments: '--configuration Release --collect:"XPlat Code Coverage"'
+
+  - stage: Deploy
+    displayName: 'Deploy Stage'
+    dependsOn: Test
+    jobs:
+      - deployment: DeployWebApp
+        displayName: 'Deploy to Azure Web App'
+        environment: 'production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  displayName: 'Deploy to Azure App Service'
+                  inputs:
+                    azureSubscription: 'AzureConnection-CarSim'
+                    appType: 'webApp'
+                    appName: 'carsimulatorapp123younes'
+                    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
