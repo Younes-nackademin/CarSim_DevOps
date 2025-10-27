@@ -8,8 +8,8 @@ namespace APIServiceLibrary.DTO
 {
     public class NameDTO
     {
-        public string Title { get; set; }
-        public string First { get; set; }
-        public string Last { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string First { get; set; } = string.Empty;
+        public string Last { get; set; } = string.Empty;
     }
 }

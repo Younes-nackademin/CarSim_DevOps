@@ -7,18 +7,17 @@ using DataLogicLibrary.Services;
 using Moq;
 using DataLogicLibrary.Infrastructure.Enums;
 using CarSimulator.Server.Factories;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace CarSimulator.Server
 {
-    // ... (using-satser och namespace som tidigare)
-
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddScoped<ISimulationLogicService, SimulationLogicService>();
@@ -38,21 +37,20 @@ namespace CarSimulator.Server
                 switch (movementAction)
                 {
                     case MovementAction.Left:
-                        return serviceProvider.GetService<TurnLeftStrategy>();
+                        return serviceProvider.GetRequiredService<TurnLeftStrategy>();
                     case MovementAction.Right:
-                        return serviceProvider.GetService<TurnRightStrategy>();
+                        return serviceProvider.GetRequiredService<TurnRightStrategy>();
                     case MovementAction.Forward:
-                        return serviceProvider.GetService<DriveForwardStrategy>();
+                        return serviceProvider.GetRequiredService<DriveForwardStrategy>();
                     case MovementAction.Backward:
-                        return serviceProvider.GetService<ReverseStrategy>();
+                        return serviceProvider.GetRequiredService<ReverseStrategy>();
                     default:
-                        throw new KeyNotFoundException();
+                        throw new KeyNotFoundException("Unknown movement action.");
                 }
             });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -61,7 +59,6 @@ namespace CarSimulator.Server
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.MapStaticAssets();
@@ -70,7 +67,12 @@ namespace CarSimulator.Server
                 pattern: "{controller=CarSimulator}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
+            var api = new APIService();
+            var result = await api.GetOneDriver();
+            Console.WriteLine($"Driver: {result.Results[0].Name.First} {result.Results[0].Name.Last}, City: {result.Results[0].Location.City}, Country: {result.Results[0].Location.Country}");
+
             app.Run();
+
         }
     }
 }

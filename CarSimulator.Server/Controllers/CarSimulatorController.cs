@@ -4,15 +4,25 @@ using CarSimulator.Server.Models.ViewModels;
 using DataLogicLibrary.Factories;
 using DataLogicLibrary.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace CarSimulator.Server.Controllers
 {
     public class CarSimulatorController : Controller
     {
+        private readonly IAPIService _apiService;
+        private readonly ISimulationLogicService _simulationLogicService;
+        private readonly ICarFactory _carFactory;
+        private readonly IDriverFactory _driverFactory;
+        private readonly IStatusFactory _statusFactory;
+        private readonly IStatusMessageService _statusMessageService;
 
-        public CarSimulatorController(IAPIService apiService, ISimulationLogicService simulationLogicService, ICarFactory carFactory,
-                                      IDriverFactory driverFactory, IStatusFactory statusFactory, IStatusMessageService statusMessageService)
+        public CarSimulatorController(
+            IAPIService apiService,
+            ISimulationLogicService simulationLogicService,
+            ICarFactory carFactory,
+            IDriverFactory driverFactory,
+            IStatusFactory statusFactory,
+            IStatusMessageService statusMessageService)
         {
             _apiService = apiService;
             _simulationLogicService = simulationLogicService;
@@ -22,15 +32,6 @@ namespace CarSimulator.Server.Controllers
             _statusMessageService = statusMessageService;
         }
 
-        private readonly IAPIService _apiService;
-        private readonly ISimulationLogicService _simulationLogicService;
-        private readonly ICarFactory _carFactory;
-        private readonly IDriverFactory _driverFactory;
-        private readonly IStatusFactory _statusFactory;
-        private readonly IStatusMessageService _statusMessageService;
-
-
-
         public async Task<IActionResult> Index(SimulationViewModel viewModel)
         {
             if (viewModel.SelectedAction == 7)
@@ -38,11 +39,15 @@ namespace CarSimulator.Server.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (viewModel.Driver == null)
+            if (viewModel.Driver == null || string.IsNullOrEmpty(viewModel.Driver.First))
             {
                 var resultDTO = await _apiService.GetOneDriver();
                 var driver = _driverFactory.CreateDriver(resultDTO);
                 viewModel.Driver = driver;
+
+                viewModel.DriverName = $"{driver.Title}. {driver.First} {driver.Last}";
+                viewModel.City = driver.City;
+                viewModel.Country = driver.Country;
             }
 
             if (viewModel.IsRunning)
@@ -52,7 +57,6 @@ namespace CarSimulator.Server.Controllers
                     viewModel.CurrentStatus = _simulationLogicService.DecreaseStatusValues(viewModel.SelectedAction, viewModel.CurrentStatus);
                     viewModel.CurrentStatus = _simulationLogicService.PerformAction(viewModel.SelectedAction, viewModel.CurrentStatus);
                 }
-
                 else
                 {
                     viewModel.Car = _carFactory.CreateCar();
@@ -67,6 +71,5 @@ namespace CarSimulator.Server.Controllers
             ModelState.Clear();
             return View(viewModel);
         }
-
     }
 }

@@ -8,10 +8,11 @@ namespace CarSimulator.Server.Models
 {
     public class Driver
     {
-        public string Title { get; set; }
-        public string First { get; set; }
-        public string Last { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string First { get; set; } = string.Empty;
+        public string Last { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
     }
+
 }

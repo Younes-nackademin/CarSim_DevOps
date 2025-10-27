@@ -8,6 +8,6 @@ namespace APIServiceLibrary.DTO
 {
     public class ResultsDTO
     {
-        public List<ResultDTO> Results { get; set; }
+        public List<ResultDTO> Results { get; set; } = new List<ResultDTO>();
     }
 }
