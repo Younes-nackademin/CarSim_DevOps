@@ -97,4 +97,4 @@ stages:
               azureSubscription: 'AzureConnection-CarSim'
               appType: 'webApp'
               appName: 'carsimulatorapp123younes'
-              package: '$(Pipeline.Workspace)/drop/CarSimApp.zip'
+              package: '$(Pipeline.Workspace)/drop/webapp'
