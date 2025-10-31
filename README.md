@@ -7,13 +7,13 @@ Applikationen, Car Simulator, simulerar rörelser och riktningar för en bil gen
 Projektet innehåller:
 - En backend i C#/.NET  
 - En pipeline i Azure DevOps med tre stages (Build, Test, Deploy)  
-- En publicerad webbapp på Azure
+- En publicerad webbapp på Azure  
 
 ---
 
 ## Funktioner
 - Bygger hela lösningen automatiskt via Azure Pipelines  
-- Kör alla enhetstester (26 st) med 100 % pass-rate  
+- Kör alla enhetstester med 100 % pass-rate  
 - Rensar alla warnings innan build  
 - Deployar automatiskt till Azure App Service  
 - Webbsidan har en index.html som standardfil för att visa att deployment lyckats  
@@ -21,7 +21,7 @@ Projektet innehåller:
 ---
 
 ## CI/CD Pipeline
-Pipelinefilen heter azure-pipelines.yml och innehåller följande stages:
+Pipelinefilen heter **azure-pipelines.yml** och innehåller följande stages:
 
 ### Build Stage
 - Installerar .NET SDK  
@@ -35,13 +35,14 @@ Pipelinefilen heter azure-pipelines.yml och innehåller följande stages:
 ### Deploy Stage
 - Publicerar till Azure App Service  
 - Appen hostas på:  
-  https://carsimulatorapp123younes.azurewebsites.net
+  https://carsimulatorapp123younes.azurewebsites.net  
 
 ---
 
 ## Tester
-- Antal tester: 26 st  
-- Resultat: 100 % passed  
+- Unika tester i projektet: ca 25–30 st  
+- Totalt körda testresultat i pipeline: **319**  
+- Pass rate: **100 %**  
 - Testerna säkerställer logiken i:
   - DirectionContext  
   - DriveForwardStrategy  
@@ -51,7 +52,7 @@ Pipelinefilen heter azure-pipelines.yml och innehåller följande stages:
   - SimulationLogicService  
 
 Pipeline-logg visar:  
-26 Total tests — 100% Passed — 0 Failed — 0 Warnings
+**319 Total test results — 100% Passed — 0 Failed — 0 Warnings**
 
 ---
 
@@ -60,7 +61,7 @@ Pipeline-logg visar:
 - .NET SDK 9.0.x  
 - Azure DevOps  
 - Azure App Service  
-- GitHub version control
+- GitHub version control  
 
 ---
 
@@ -69,21 +70,20 @@ Appen är publicerad till:
 https://carsimulatorapp123younes.azurewebsites.net  
 
 Vid lyckad publicering visas:  
-"Application deployed successfully"
+**"Application deployed successfully"**
 
 ---
 
 ## Sammanfattning av inlämningen
 | Krav | Status | Kommentar |
 |------|--------|------------|
-| 20–40 enhetstester | 26 st, alla godkända |
+| 20–40 unika enhetstester | Uppfyllt — totalt 319 körda testresultat med 100% passrate |
 | Inga warnings/errors | 0 Errors, 0 Warnings |
-| Pipelines i tre stages | Build, Test, Deploy |
-| Deployment till Azure | Lyckad publicering |
-| README.md | Inkluderad |
+| Pipelines i tre stages | Build, Test, Deploy — alla lyckade |
+| Deployment till Azure | Lyckad publicering till App Service |
+| README.md | Inkluderad och dokumenterad |
 
 ---
 
 ## Skapad av
-Younes Kesraoui  
-
+**Younes Kesraoui**
