@@ -86,4 +86,4 @@ Vid lyckad publicering visas:
 
 ## Skapad av
 Younes Kesraoui  
-Nackademin YH — Webbutveckling .NET
+
