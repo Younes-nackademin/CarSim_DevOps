@@ -35,7 +35,7 @@ Pipelinefilen heter **azure-pipelines.yml** och innehåller följande stages:
 ### Deploy Stage
 - Publicerar till Azure App Service  
 - Appen hostas på:  
-  **https://carsimulatorapp123younes-h4eyd2htf7awa4ac.swedencentral-01.azurewebsites.net**
+  **https://carsimulatorapp123younes-h4eyd2htf7awa4ac.swedencentral-01.azurewebsites.net/**
 
 ---
 
@@ -67,7 +67,7 @@ Pipeline-logg visar:
 
 ## Azure Deployment
 Applikationen är publicerad och tillgänglig på:  
-**https://carsimulatorapp123younes-h4eyd2htf7awa4ac.swedencentral-01.azurewebsites.net**  
+**https://carsimulatorapp123younes-h4eyd2htf7awa4ac.swedencentral-01.azurewebsites.net/**  
 
 Vid lyckad publicering visas:  
 **"Application deployed successfully"**
