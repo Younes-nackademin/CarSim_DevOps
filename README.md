@@ -80,7 +80,7 @@ Vid lyckad publicering visas meddelandet:
 | Warnings/Errors | Inga kvar |
 | CI/CD-pipeline | Tre separata steg: Build, Test, Deploy |
 | Deployment till Azure | Fungerar och publicerar korrekt |
-| Dokumentation | README.md uppdaterad och tydlig |
+| Dokumentation | README.md|
 
 ---
 
