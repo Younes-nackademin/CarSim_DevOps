@@ -1,27 +1,27 @@
 # Car Simulator DevOps Project
 
 ## Projektbeskrivning
-Detta projekt är en del av kursen **DevOps** och syftar till att implementera en **CI/CD-pipeline** med **Azure DevOps** för en **ASP.NET Core-applikation**.  
-Applikationen **Car Simulator** simulerar rörelser och riktningar för en bil genom olika strategiklasser och logik.  
+Detta projekt är en del av kursen **DevOps** och syftar till att skapa en fungerande **CI/CD-pipeline** i **Azure DevOps** för en **ASP.NET Core-applikation**.  
+Applikationen, **Car Simulator**, simulerar en bils rörelser och riktningar med hjälp av strategiklasser och logik i backend-delen.  
 
-Projektet innehåller:  
-- En backend i **C#/.NET**  
-- En pipeline i **Azure DevOps** med tre stages (Build, Test, Deploy)  
-- En publicerad webbapp på **Azure App Service**
+Projektet består av:  
+- En backend byggd i **C#/.NET**  
+- En pipeline i **Azure DevOps** med tre steg: *Build*, *Test* och *Deploy*  
+- En publicerad webbapplikation på **Azure App Service**
 
 ---
 
 ## Funktioner
-- Bygger hela lösningen automatiskt via Azure Pipelines  
-- Kör alla enhetstester med **100 % pass-rate**  
-- Rensar alla warnings innan build  
-- Deployar automatiskt till Azure App Service  
-- Webbsidan har en `index.html` som standardfil för att visa att deployment lyckats  
+- Automatisk build via Azure Pipelines  
+- Körning av enhetstester med **100 % godkända resultat**  
+- Rensning av alla warnings före build  
+- Automatisk publicering till Azure App Service  
+- En `index.html`-fil som visar att deployment lyckades  
 
 ---
 
-## CI/CD Pipeline
-Pipelinefilen heter **azure-pipelines.yml** och innehåller följande stages:
+## CI/CD-pipeline
+Pipelinefilen **azure-pipelines.yml** innehåller följande steg:
 
 ### Build Stage
 - Installerar .NET SDK  
@@ -29,30 +29,29 @@ Pipelinefilen heter **azure-pipelines.yml** och innehåller följande stages:
 - Bygger hela lösningen  
 
 ### Test Stage
-- Kör alla enhetstester via DotNetCoreCLI@2  
+- Kör enhetstester via DotNetCoreCLI@2  
 - Genererar testresultat och kodtäckning  
 
 ### Deploy Stage
 - Publicerar till Azure App Service  
-- Appen hostas på:  
-  **https://carsimulatorapp123younes.azurewebsites.net**
+- Webappen finns på:  
+  **https://carsimulatorapp123younes-h4eyd2htf7awa4ac.swedencentral-01.azurewebsites.net/**  
 
 ---
 
 ## Tester
-- Antal unika tester: **26 st**  
-- Totalt körda testresultat i pipeline: **26**  
-- Pass rate: **100 %**  
-- Testerna säkerställer logiken i:
+- Antal tester: **26 st**  
+- Alla tester passerade: **100 %**  
+- Testerna verifierar funktionaliteten i:
   - **DirectionContext**  
   - **DriveForwardStrategy**  
   - **TurnLeftStrategy**  
   - **TurnRightStrategy**  
   - **ReverseStrategy**  
-  - **SimulationLogicService**  
+  - **SimulationLogicService**
 
-Pipeline-logg visar:  
-**26 Total tests — 100% Passed — 0 Failed — 0 Warnings**
+Pipeline-loggen visar:  
+**26 tests — 26 Passed — 0 Failed — 0 Warnings**
 
 ---
 
@@ -61,24 +60,28 @@ Pipeline-logg visar:
 - **.NET SDK 9.0.x**  
 - **Azure DevOps**  
 - **Azure App Service**  
-- **GitHub version control**
+- **GitHub Version Control**
 
 ---
 
-## Azure Deployment
-Appen är publicerad till:  
-**https://carsimulatorapp123younes.azurewebsites.net**
+## Azure-deployment
+Webbapplikationen är publicerad och tillgänglig på:  
+**https://carsimulatorapp123younes-h4eyd2htf7awa4ac.swedencentral-01.azurewebsites.net/**  
 
-Vid lyckad publicering visas:  
+Vid lyckad publicering visas meddelandet:  
 **"Application deployed successfully"**
 
 ---
 
-## Sammanfattning av inlämningen
-| Krav | Status | Kommentar |
-|------|--------|------------|
-| 20–40 unika enhetstester | ✅ 26 st, alla godkända |
-| Inga warnings/errors | ✅ 0 Errors, 0 Warnings |
-| Pipelines i tre stages | ✅ Build, Test, Deploy — alla lyckade |
-| Deployment till Azure | ✅ Lyckad publicering till App Service |
-| README.md | ✅ Inkluderad och uppdaterad |
+## Projektstatus
+| Delmoment | Resultat | Kommentar |
+|------------|-----------|------------|
+| Enhetstester (20–40 st) | 26 genomförda och godkända |
+| Warnings/Errors | Inga kvar |
+| CI/CD-pipeline | Tre separata steg: Build, Test, Deploy |
+| Deployment till Azure | Fungerar och publicerar korrekt |
+| Dokumentation | README.md uppdaterad och tydlig |
+
+---
+
+
