@@ -68,8 +68,6 @@ Pipeline-loggen visar:
 Webbapplikationen är publicerad och tillgänglig på:  
 **https://carsimulatorapp123younes-h4eyd2htf7awa4ac.swedencentral-01.azurewebsites.net/**  
 
-Vid lyckad publicering visas meddelandet:  
-**"Application deployed successfully"**
 
 ---
 
